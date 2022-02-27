@@ -1,0 +1,54 @@
+{
+  "name": "loopback4-seeder",
+  "description": "Run seeders to populate database",
+  "version": "0.1.0",
+  "keywords": [
+    "loopback-4",
+    "Seed",
+    "Seeder"
+  ],
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "author": "David Sanchez <emulienfou@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/emulienfou/loopback4-seeder.git"
+  },
+  "engines": {
+    "node": "12 || 14 || 16 || 17"
+  },
+  "scripts": {
+    "build": "lb-tsc",
+    "clean": "lb-clean loopback4-seeder*.tgz dist *.tsbuildinfo package",
+    "pretest": "npm run build",
+    "test": "lb-mocha \"dist/__tests__/**/*.js\"",
+    "verify": "npm pack && tar xf loopback4-seeder*.tgz && tree package && npm run clean"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "README.md",
+    "dist",
+    "src",
+    "!*/__tests__"
+  ],
+  "peerDependencies": {
+    "@loopback/core": "^3.1.0",
+    "@loopback/repository": "*"
+  },
+  "dependencies": {
+    "@types/debug": "^4.1.7",
+    "debug": "^4.3.3",
+    "tslib": "^2.3.1"
+  },
+  "devDependencies": {
+    "@loopback/build": "^8.1.0",
+    "@loopback/core": "^3.1.0",
+    "@loopback/eslint-config": "^12.0.2",
+    "@loopback/repository": "^4.1.0",
+    "@loopback/testlab": "^4.1.0",
+    "@types/node": "^12.20.46"
+  }
+}
