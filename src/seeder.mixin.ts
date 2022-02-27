@@ -2,6 +2,7 @@ import {Application, Binding, MixinTarget} from '@loopback/core';
 import {DefaultCrudRepository, Entity} from '@loopback/repository';
 import {debug} from './seeder.component';
 import {SeederInterface} from './types';
+import { SeederBindings } from './keys'
 
 export function SeedMixin<T extends MixinTarget<Application>>(superClass: T) {
   return class extends superClass {
@@ -25,7 +26,7 @@ export function SeedMixin<T extends MixinTarget<Application>>(superClass: T) {
        * Seeder as class created and bound to Application.
        */
         // Find all tagged bindings as `seeder`
-      const seederBindings: Readonly<Binding<unknown>>[] = this.findByTag('seeder')
+      const seederBindings: Readonly<Binding<unknown>>[] = this.findByTag({namespace: SeederBindings.SEEDS_NAMESPACE})
       for (const s of seederBindings) {
         debug(`Loading seeds from "${s.key}" class`)
         // Get instance of the seeder

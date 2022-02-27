@@ -1,11 +1,14 @@
 {
   "name": "loopback4-seeder",
   "description": "Run seeders to populate database",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "keywords": [
     "loopback-4",
-    "Seed",
-    "Seeder"
+    "loopback-extension",
+    "loopback-next",
+    "seeds",
+    "seeder",
+    "database"
   ],
   "license": "MIT",
   "main": "dist/index.js",
@@ -23,7 +26,8 @@
     "clean": "lb-clean loopback4-seeder*.tgz dist *.tsbuildinfo package",
     "pretest": "npm run build",
     "test": "lb-mocha \"dist/__tests__/**/*.js\"",
-    "verify": "npm pack && tar xf loopback4-seeder*.tgz && tree package && npm run clean"
+    "verify": "npm pack && tar xf loopback4-seeder*.tgz && tree package && npm run clean",
+    "publish": "npm run build && npm publish --access public"
   },
   "publishConfig": {
     "access": "public"
