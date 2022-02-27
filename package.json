@@ -1,7 +1,7 @@
 {
   "name": "loopback4-seeder",
   "description": "Run seeders to populate database",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "keywords": [
     "loopback-4",
     "Seed",
