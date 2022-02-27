@@ -1,7 +1,7 @@
 {
   "name": "loopback4-seeder",
   "description": "Run seeders to populate database",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "keywords": [
     "loopback-4",
     "Seed",
@@ -49,6 +49,7 @@
     "@loopback/eslint-config": "^12.0.2",
     "@loopback/repository": "^4.1.0",
     "@loopback/testlab": "^4.1.0",
-    "@types/node": "^12.20.46"
+    "@types/node": "^12.20.46",
+    "typescript": "^4.5.5"
   }
 }
