@@ -1,6 +1,6 @@
 # loopback4-seeder
 
-This module contains a component to run seeders to populate tables.
+This module contains a mixin to run seeders to populate tables.
 
 ## Stability: ⚠️Experimental⚠️
 
@@ -27,23 +27,6 @@ import {SeedMixin} from 'loopback4-seeder';
 class MyApplication extends SeedMixin(Application) {}
 ```
 
-### Register the SeederComponent
-
-The component should be loaded in the constructor of your custom `Application`
-class.
-
-Start by importing the component class:
-
-```ts
-import {SeederComponent} from 'loopback4-seeder';
-```
-
-In the constructor, add the component to your application:
-
-```ts
-this.component(SeederComponent);
-```
-
 ### Implement the SeedMixinInterface
 
 Optionally you can implement the `SeedMixinInterface` in the constructor of
@@ -53,7 +36,7 @@ By doing that you can directly use the function `loadSeeds` without creating
 any seeder classes to load the data from files.
 
 ```ts
-import {asSeed, SeederComponent, SeedMixin, SeedMixinInterface} from 'loopback4-seeder';
+import {SeedMixin, SeedMixinInterface} from 'loopback4-seeder';
 import json from './dummy.json';
 
 export class MyApplication extends SeedMixin(Application) implements SeedMixinInterface {
@@ -70,7 +53,7 @@ export class MyApplication extends SeedMixin(Application) implements SeedMixinIn
 We can create an instance of `Seeder` and bind it to the application context.
 
 ```ts
-import {asSeed, Seeder, seeder} from 'loopback-seeder';
+import {Seeder, seeder} from 'loopback-seeder';
 
 // Create a seed
 @seeder()
@@ -85,7 +68,7 @@ export class DummySeeder extends Seeder {
 }
 
 // Bind the seed class to the application and tag it as a seeder
-app.add(createBindingFromClass(DummySeeder).apply(asSeed));
+app.add(createBindingFromClass(DummySeeder).tags('seed'));
 ```
 
 ### Add seed script

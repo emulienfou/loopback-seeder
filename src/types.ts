@@ -1,10 +1,7 @@
-// Copyright IBM Corp. 2020. All Rights Reserved.
-// Node module: @loopback/seeder
-// This file is licensed under the MIT License.
-// License text available at https://opensource.org/licenses/MIT
-
 import {Binding, BindingScope, extensionFor} from '@loopback/core';
-import {SeederBindings} from './keys';
+import {SEEDS_NAMESPACE} from './keys';
+import {DefaultCrudRepository, Entity} from '@loopback/repository';
+import {debug} from './index';
 
 /**
  * Name of the seed extension point
@@ -19,7 +16,7 @@ export const SEEDER = 'seeder';
 export function asSeed<T = unknown>(binding: Binding<T>) {
   return binding
     .apply(extensionFor(SEEDER))
-    .tag({namespace: SeederBindings.SEEDS_NAMESPACE})
+    .tag({namespace: SEEDS_NAMESPACE})
     .inScope(BindingScope.SINGLETON);
 }
 
@@ -36,10 +33,27 @@ export interface SeederInterface {
   seed(): Promise<void>;
 }
 
+export const loadByModel = async <T extends Entity, ID>(items: T[], repository$: DefaultCrudRepository<T,ID>, type:  { new(it: Partial<T>): T ;}) => {
+  debug('Seeding data for model "%s"', type.name);
+  let repository = await repository$;
+  await repository.deleteAll();
+  await Promise.all(items.map(async (item: T) => {
+    try {
+      return await repository.create((new type(item)));
+    } catch (e) {
+      debug('Error: %s', e.message);
+    }
+  }))
+}
+
 export abstract class Seeder implements SeederInterface {
   abstract seed(): Promise<void>
 
-  beforeSeed(): Promise<void> {
-    return Promise.resolve(undefined)
+  public beforeSeed(): Promise<void> {
+    return Promise.resolve(undefined);
+  }
+
+  public async loadByModel<I extends Entity, ID>(items: I[], repository$: DefaultCrudRepository<I, ID>, type: { new(it: Partial<I>): I; }): Promise<void> {
+    return loadByModel(items, repository$, type);
   }
 }

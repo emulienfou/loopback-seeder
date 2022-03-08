@@ -1,8 +1,3 @@
-// Copyright IBM Corp. 2020. All Rights Reserved.
-// Node module: @loopback/seeder
-// This file is licensed under the MIT License.
-// License text available at https://opensource.org/licenses/MIT
-
 import {BindingSpec, injectable} from '@loopback/core';
 import {asSeed} from '../types';
 
