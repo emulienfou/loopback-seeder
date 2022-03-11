@@ -41,9 +41,7 @@ import json from './dummy.json';
 
 export class MyApplication extends SeedMixin(Application) implements SeedMixinInterface {
   async loadSeeds(): Promise<void> {
-    const dummyRepository = await this.getRepository(DummyRepository);
-    await dummyRepository.deleteAll();
-    await this.loadByModel(json, dummyRepository, Dummy);
+    await this.loadByModel(json, await this.getRepository(DummyRepository), Dummy);
   }
 }
 ```
