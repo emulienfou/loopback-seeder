@@ -2,9 +2,16 @@ import {Application, Binding, MixinTarget} from '@loopback/core';
 import {DefaultCrudRepository, Entity} from '@loopback/repository';
 import {debug, loadByModel} from '../index';
 import {SeederInterface} from '../types';
+import {SeederComponent} from '../components';
 
 export function SeedMixin<T extends MixinTarget<Application>>(superClass: T) {
   return class extends superClass {
+
+    constructor(...args: any[]) {
+      super(...args);
+      this.component(SeederComponent);
+    }
+
     public async load(): Promise<void> {
       /* eslint-disable @typescript-eslint/ban-ts-comment */
       // A workaround to access protected Application methods

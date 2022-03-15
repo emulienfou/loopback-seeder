@@ -1,5 +1,5 @@
-Copyright (c) IBM Corp. 2022.
-Node module: @loopback/seeder
+Copyright (c) 2022.
+Node module: loopback4-seeder
 This project is licensed under the MIT License, full text below.
 
 --------

@@ -46,9 +46,9 @@ export class MyApplication extends SeedMixin(Application) implements SeedMixinIn
 }
 ```
 
-### Register seeders
+### Create seeder
 
-We can create an instance of `Seeder` and bind it to the application context.
+We can create an instance of `Seeder`.
 
 ```ts
 import {Seeder, seeder} from 'loopback-seeder';
@@ -64,9 +64,6 @@ export class DummySeeder extends Seeder {
     // Run you seed code
   }
 }
-
-// Bind the seed class to the application and tag it as a seeder
-app.add(createBindingFromClass(DummySeeder).tags('seed'));
 ```
 
 ### Add seed script
