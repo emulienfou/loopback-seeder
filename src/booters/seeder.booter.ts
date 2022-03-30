@@ -21,7 +21,7 @@ export class SeederBooter extends BaseArtifactBooter {
     await super.load();
 
     for (const cls of this.classes) {
-      debug('Bind class: %s', cls.name);
+      debug('[INFO] Bind class: %s', cls.name);
       this.app.add(createBindingFromClass(cls).tag('seed'))
     }
   }

@@ -16,14 +16,14 @@ export function SeedMixin<T extends MixinTarget<Application>>(superClass: T) {
       /* eslint-disable @typescript-eslint/ban-ts-comment */
       // A workaround to access protected Application methods
       const self = this as unknown as Application;
-      debug('Loading seeds');
+      debug('[INFO] Loading seeds');
 
       /**
        * Application implements `SeedMixinInterface` and have `loadSeeds` method.
        */
       // @ts-ignore
       if (typeof self.loadSeeds === 'function') {
-        debug('Loading seeds from "loadSeeds" function');
+        debug('[INFO] Loading seeds from "loadSeeds" function');
         // @ts-ignore
         await self.loadSeeds();
       }
@@ -34,7 +34,7 @@ export function SeedMixin<T extends MixinTarget<Application>>(superClass: T) {
         // Find all tagged bindings as `seeder`
       const seederBindings: Readonly<Binding<unknown>>[] = this.findByTag('seed')
       for (const s of seederBindings) {
-        debug(`Loading seeds from "${s.key}" class`);
+        debug(`[INFO] Loading seeds from "${s.key}" class`);
         // Get instance of the seeder
         const instance = await this.get<SeederInterface>(s.key);
         // Run before seed

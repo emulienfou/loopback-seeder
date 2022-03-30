@@ -21,6 +21,13 @@ export function asSeed<T = unknown>(binding: Binding<T>) {
 }
 
 /**
+ * Interface used by the decorator to typehint passed arguments.
+ */
+export interface SeederMetadata {
+  name?: string;
+}
+
+/**
  * Interface used by Application
  */
 export interface SeedMixinInterface {
@@ -34,14 +41,14 @@ export interface SeederInterface {
 }
 
 export const loadByModel = async <T extends Entity, ID>(items: T[], repository$: DefaultCrudRepository<T,ID>, type:  { new(it: Partial<T>): T ;}) => {
-  debug('Seeding data for model "%s"', type.name);
+  debug('[INFO] Seeding data for model "%s"', type.name);
   let repository = await repository$;
   await repository.deleteAll();
   await Promise.all(items.map(async (item: T) => {
     try {
       return await repository.create((new type(item)));
     } catch (e) {
-      debug('Error: %s', e.message);
+      debug('[ERROR] %s', e.message);
     }
   }))
 }
