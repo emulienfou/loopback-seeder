@@ -31,7 +31,7 @@ export interface SeederMetadata {
  * Interface used by Application
  */
 export interface SeedMixinInterface {
-  loadSeeds(): Promise<void>;
+  loadSeeds(filterClasses?: string[]): Promise<void>;
 }
 
 export interface SeederInterface {

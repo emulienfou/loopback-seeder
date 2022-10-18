@@ -40,8 +40,9 @@ import {SeedMixin, SeedMixinInterface} from 'loopback4-seeder';
 import json from './dummy.json';
 
 export class MyApplication extends SeedMixin(Application) implements SeedMixinInterface {
-  async loadSeeds(): Promise<void> {
-    await this.loadByModel(json, await this.getRepository(DummyRepository), Dummy);
+  async loadSeeds(filterClasses?: string[]): Promise<void> {
+    if (!filterClasses?.includes('Dummy'))
+      await this.loadByModel(json, await this.getRepository(DummyRepository), Dummy);
   }
 }
 ```
@@ -74,10 +75,10 @@ containing the next script:
 ```ts
 import {Application} from './application';
 
-export const seed = async () => {
+export const seed = async (args: string[]) => {
   const app = new Application();
   await app.boot();
-  await app.load();
+  await app.load(args);
 
   // Connectors usually keep a pool of opened connections,
   // this keeps the process running even after all work is done.
@@ -85,7 +86,7 @@ export const seed = async () => {
   process.exit(0);
 }
 
-seed().catch(err => {
+seed(process.argv).catch(err => {
   console.error('Cannot seed database schema', err);
   process.exit(1);
 })
@@ -98,6 +99,20 @@ Then you will need to add a new script inside your `package.json` file, like:
     "seed": "node ./dist/seed"
   }
 }
+```
+
+### Run seed command
+
+Seed database (populate database):
+
+```shell
+npm run seed
+```
+
+Seed database, only for a specific class (Dummy seeder):
+
+```shell
+npm run seed Dummy
 ```
 
 ### Debug

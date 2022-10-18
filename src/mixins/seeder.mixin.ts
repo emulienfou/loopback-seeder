@@ -1,6 +1,6 @@
 import {Application, Binding, MixinTarget} from '@loopback/core';
 import {DefaultCrudRepository, Entity} from '@loopback/repository';
-import {debug, loadByModel} from '../index';
+import {debug, loadByModel, SEEDS_NAMESPACE} from '../index';
 import {SeederInterface} from '../types';
 import {SeederComponent} from '../components';
 
@@ -12,7 +12,9 @@ export function SeedMixin<T extends MixinTarget<Application>>(superClass: T) {
       this.component(SeederComponent);
     }
 
-    public async load(): Promise<void> {
+    public async load(args: string[]): Promise<void> {
+      // Get command arguments classes
+      const filterClasses = args.slice(2)
       /* eslint-disable @typescript-eslint/ban-ts-comment */
       // A workaround to access protected Application methods
       const self = this as unknown as Application;
@@ -25,15 +27,20 @@ export function SeedMixin<T extends MixinTarget<Application>>(superClass: T) {
       if (typeof self.loadSeeds === 'function') {
         debug('[INFO] Loading seeds from "loadSeeds" function');
         // @ts-ignore
-        await self.loadSeeds();
+        await self.loadSeeds(filterClasses);
       }
 
       /**
        * Seeder as class created and bound to Application.
        */
         // Find all tagged bindings as `seeder`
-      const seederBindings: Readonly<Binding<unknown>>[] = this.findByTag('seed')
-      for (const s of seederBindings) {
+      const seederBindings: Readonly<Binding<unknown>>[] = this.findByTag('seed');
+      // Filter seeder bindings if filter classes parameter provided from argv
+      const filteredSeederBindings = filterClasses.length ?
+        seederBindings.filter(({ key }) => filterClasses.includes(key.replace(`${ SEEDS_NAMESPACE }.`, '').replace('Seeder', ''))) :
+        seederBindings;
+      // Loop over filtered/all bindings
+      for (const s of filteredSeederBindings) {
         debug(`[INFO] Loading seeds from "${s.key}" class`);
         // Get instance of the seeder
         const instance = await this.get<SeederInterface>(s.key);
